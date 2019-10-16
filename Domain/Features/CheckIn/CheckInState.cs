@@ -9,7 +9,7 @@ namespace Domain.Features.CheckIn
 {
     public class CheckInState
     {
-        public CheckInState(List<PatientWithStatus> patientStatuses)
+        private CheckInState(List<PatientWithStatus> patientStatuses)
         {
             PatientStatuses = new ReadOnlyCollection<PatientWithStatus>(patientStatuses);
         }
