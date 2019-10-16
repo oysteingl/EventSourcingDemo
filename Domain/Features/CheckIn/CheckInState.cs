@@ -9,10 +9,13 @@ namespace Domain.Features.CheckIn
 {
     public class CheckInState
     {
+        public static CheckInState Empty => new CheckInState(new List<PatientWithStatus>());
+
         private CheckInState(List<PatientWithStatus> patientStatuses)
         {
             PatientStatuses = new ReadOnlyCollection<PatientWithStatus>(patientStatuses);
         }
+
         public ReadOnlyCollection<PatientWithStatus> PatientStatuses;
 
         public CheckInState ProcessEvents(IOrderedEnumerable<ICheckInEvent> orderedEvents)
@@ -22,6 +25,7 @@ namespace Domain.Features.CheckIn
             {
                 currentState = checkInEvent.Process(currentState);
             }
+
             return new CheckInState(currentState.ToList());
         }
     }
@@ -30,11 +34,13 @@ namespace Domain.Features.CheckIn
     {
         public Guid PatientId { get; }
         public CheckInStatus CheckInStatus { get; }
+        public DateTime LastChange { get; }
 
-        public PatientWithStatus(Guid patientId, CheckInStatus checkInStatus)
+        public PatientWithStatus(Guid patientId, CheckInStatus checkInStatus, long timeStamp)
         {
             PatientId = patientId;
             CheckInStatus = checkInStatus;
+            LastChange = DateTimeOffset.FromUnixTimeSeconds(timeStamp).DateTime;
         }
     }
 }

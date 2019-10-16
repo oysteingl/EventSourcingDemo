@@ -9,6 +9,9 @@ namespace Domain.Features.CheckIn
     {
         Guid EventId { get; set; }
         Guid ChangeId { get; set; }
+        Guid PatientId { get; }
+        long Timestamp { get; set; }
+        CheckInStatus CheckInStatus { get; set; }
         ReadOnlyCollection<PatientWithStatus> Process(ReadOnlyCollection<PatientWithStatus> currentState);
     }
 }

@@ -17,7 +17,7 @@ namespace Tests.Unit.CheckInChangedEvent
             var currentState = new List<PatientWithStatus>().AsReadOnly();
             var patientId = Guid.NewGuid();
 
-            var checkInChangedEvent = new Domain.Features.CheckIn.CheckInChangedEvent(Guid.NewGuid(), patientId, CheckInStatus.CheckedIn);
+            var checkInChangedEvent = CheckInEventFactory.Create(patientId, CheckInStatus.CheckedIn, DateTime.Now);
 
             var newState = checkInChangedEvent.Process(currentState);
 
@@ -28,9 +28,9 @@ namespace Tests.Unit.CheckInChangedEvent
         public void UpdateStatusOfExistingPatient()
         {
             var patientId = Guid.NewGuid();
-            var currentState = new List<PatientWithStatus>{new PatientWithStatus(patientId, CheckInStatus.CheckedIn)}.AsReadOnly();
+            var currentState = new List<PatientWithStatus>{new PatientWithStatus(patientId, CheckInStatus.CheckedIn, DateTimeOffset.Now.ToUnixTimeSeconds())}.AsReadOnly();
 
-            var checkInChangedEvent = new Domain.Features.CheckIn.CheckInChangedEvent(Guid.NewGuid(), patientId, CheckInStatus.SamplingStarted);
+            var checkInChangedEvent = CheckInEventFactory.Create(patientId, CheckInStatus.SamplingStarted, DateTime.Now);
 
             var newState = checkInChangedEvent.Process(currentState);
 

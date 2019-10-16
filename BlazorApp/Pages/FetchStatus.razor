@@ -1,0 +1,44 @@
+﻿@page "/fetchdata"
+
+@using BlazorApp.Data
+@inject CheckInStateService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (patientStatusViewModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Patient name</th>
+                <th>Status</th>
+                <th>Last change</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patientStatusViewModel in patientStatusViewModels)
+            {
+                <tr>
+                    <td>@patientStatusViewModel.PatientName</td>
+                    <td>@patientStatusViewModel.CheckInStatus</td>
+                    <td>@patientStatusViewModel.LastChange.ToShortTimeString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    PatientStatusViewModel[] patientStatusViewModels;
+
+    protected override async Task OnInitializedAsync()
+    {
+        patientStatusViewModels = await ForecastService.GetCurrentPatientStatuses(DateTime.Now);
+    }
+}

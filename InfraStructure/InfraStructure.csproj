@@ -8,4 +8,8 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Bogus" Version="28.4.1" />
+    </ItemGroup>
+
 </Project>
