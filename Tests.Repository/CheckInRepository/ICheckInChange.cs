@@ -4,7 +4,8 @@ namespace Tests.Repository.CheckInRepository
 {
     public interface ICheckInChange
     {
-        CheckInStatus CheckInStatus { get; set; }
-        Guid ChangeId { get; set; }
+        CheckInStatus CheckInStatus { get; }
+        Guid ChangeId { get; }
+        Guid PatientId { get; }
     }
 }

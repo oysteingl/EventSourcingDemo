@@ -4,11 +4,15 @@ namespace Tests.Repository.CheckInRepository
 {
     public class CheckInChange : ICheckInChange
     {
-        public CheckInChange()
+        public CheckInChange(CheckInStatus checkInStatus, Guid changeId, Guid patientId)
         {
-            ChangeId = Guid.NewGuid();
+            CheckInStatus = checkInStatus;
+            ChangeId = changeId;
+            PatientId = patientId;
         }
-        public CheckInStatus CheckInStatus { get; set; }
-        public Guid ChangeId { get; set; }
+        
+        public CheckInStatus CheckInStatus { get; }
+        public Guid ChangeId { get;}
+        public Guid PatientId { get;}
     }
 }
