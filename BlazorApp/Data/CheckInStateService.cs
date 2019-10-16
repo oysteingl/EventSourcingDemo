@@ -34,9 +34,9 @@ namespace BlazorApp.Data
                 CheckInStatus.SamplingEnded => "Finished sampling"
             };
 
-        public Task<PatientStatusViewModel[]> GetCurrentPatientStatuses(DateTime startDate)
+        public Task<PatientStatusViewModel[]> GetCurrentPatientStatuses(DateTime endDate)
         {
-            var events = _repository.GetEvents();
+            var events = _repository.GetEvents(endDate);
 
 
             var state = CheckInState.Empty;

@@ -43,9 +43,10 @@ namespace InfraStructure.Repositories.CheckIn
 
         private IEnumerable<CheckInChangedEvent> _events;
 
-        public IOrderedEnumerable<ICheckInEvent> GetEvents()
+        public IOrderedEnumerable<ICheckInEvent> GetEvents(DateTime endDate)
         {
-            return _events.OrderBy(@event => @event.Timestamp);
+            var unixTimeStamp = new DateTimeOffset(endDate).ToUnixTimeSeconds();
+            return _events.Where(e => e.Timestamp <= unixTimeStamp).OrderBy(@event => @event.Timestamp);
         }
 
         public void Refresh()

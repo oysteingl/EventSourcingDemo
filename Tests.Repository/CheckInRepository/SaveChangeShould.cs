@@ -18,7 +18,7 @@ namespace Tests.Repository.CheckInRepository
 
             await repo.SaveChange(change);
 
-            var savedEvents = repo.GetEvents();
+            var savedEvents = repo.GetEvents(DateTime.Now);
 
             savedEvents.Should().Contain(@event => @event.ChangeId == change.ChangeId);
         }

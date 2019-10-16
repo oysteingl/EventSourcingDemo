@@ -39,7 +39,7 @@ namespace BlazorApp.Data
 
         public Task<LogViewModel[]> GetLog()
         {
-            var events = _repository.GetEvents();
+            var events = _repository.GetEvents(DateTime.Now);
 
             var vms = events.Select(@event => new LogViewModel {Id = @event.EventId, PatientName = _nameService.GetPatientName(@event.PatientId), TimeStamp = DateTimeOffset.FromUnixTimeSeconds(@event.Timestamp).DateTime, Status = DisplayStatus(@event.CheckInStatus)});
 

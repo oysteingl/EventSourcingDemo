@@ -1,44 +1,82 @@
 ﻿@page "/fetchdata"
 
 @using BlazorApp.Data
-@inject CheckInStateService ForecastService
+@using Microsoft.AspNetCore.Components
+@inject CheckInStateService CheckInStateService
+@inject CheckInLogService CheckInLogService
 
-<h1>Weather forecast</h1>
+<h1>Checkin status</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component uses a projection of the event stream to show the checkin status for a given date.</p>
+<p>Use the slider to see checkin status back in time</p>
 
 @if (patientStatusViewModels == null)
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
 }
 else
 {
+    <span>
+        <input type="range" step="1" @onchange="Update" value="100"/>
+               <label>@requestedDate.ToShortDateString()</label>
+               </span>
     <table class="table">
         <thead>
-            <tr>
-                <th>Patient name</th>
-                <th>Status</th>
-                <th>Last change</th>
-            </tr>
+        <tr>
+            <th>Patient name</th>
+            <th>Status</th>
+            <th>Last change</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var patientStatusViewModel in patientStatusViewModels)
-            {
-                <tr>
-                    <td>@patientStatusViewModel.PatientName</td>
-                    <td>@patientStatusViewModel.CheckInStatus</td>
-                    <td>@patientStatusViewModel.LastChange.ToShortTimeString()</td>
-                </tr>
-            }
+        @foreach (var patientStatusViewModel in patientStatusViewModels)
+        {
+            <tr>
+                <td>@patientStatusViewModel.PatientName</td>
+                <td>@patientStatusViewModel.CheckInStatus</td>
+                <td>@patientStatusViewModel.LastChange</td>
+            </tr>
+        }
         </tbody>
     </table>
 }
 
-@code {
-    PatientStatusViewModel[] patientStatusViewModels;
+               @code {
+                   PatientStatusViewModel[] patientStatusViewModels;
+                   CheckInLogService.LogViewModel[] logs;
+                   DateTime requestedDate;
 
-    protected override async Task OnInitializedAsync()
-    {
-        patientStatusViewModels = await ForecastService.GetCurrentPatientStatuses(DateTime.Now);
-    }
-}
+                   async Task Update(ChangeEventArgs args)
+                   {
+                       requestedDate = IntToDateTime(int.Parse(args.Value.ToString()));
+                       patientStatusViewModels = await CheckInStateService.GetCurrentPatientStatuses(requestedDate);
+                   }
+
+                   int Selected;
+
+                   private DateTime IntToDateTime(int value)
+                   {
+                       var dates = logs.Select(l => l.TimeStamp);
+                       var min = new DateTimeOffset(dates.Min()).ToUnixTimeSeconds();
+                       var max = new DateTimeOffset(dates.Max()).ToUnixTimeSeconds();
+
+                       var range = max - min;
+                       var steps = range / 100;
+
+                       var percentage = steps * value;
+
+                       var stamp = percentage + min;
+
+                       return DateTimeOffset.FromUnixTimeSeconds(stamp).DateTime;
+                   }
+
+                   protected override async Task OnInitializedAsync()
+                   {
+                       patientStatusViewModels = await CheckInStateService.GetCurrentPatientStatuses(DateTime.Now);
+                       logs = await CheckInLogService.GetLog();
+                       requestedDate = DateTime.Now;
+                   }
+
+               }
