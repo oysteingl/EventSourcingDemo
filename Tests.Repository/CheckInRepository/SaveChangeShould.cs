@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Domain.Features.CheckIn;
 using FluentAssertions;
+using InfraStructure.Repositories.CheckIn;
 using Xunit;
 
 namespace Tests.Repository.CheckInRepository
@@ -19,16 +21,6 @@ namespace Tests.Repository.CheckInRepository
             var savedEvents = repo.GetEvents();
 
             savedEvents.Should().Contain(@event => @event.ChangeId == change.ChangeId);
-        }
-    }
-
-    public class Patient
-    {
-        public Guid PatientId { get; }
-
-        public Patient(Guid patientId)
-        {
-            PatientId = patientId;
         }
     }
 }

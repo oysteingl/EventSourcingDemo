@@ -1,4 +1,4 @@
-﻿namespace Tests.Repository.CheckInRepository
+﻿namespace Domain.Features.CheckIn
 {
     public enum CheckInStatus
     {

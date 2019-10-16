@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tests.Repository.CheckInRepository
+namespace Domain.Features.CheckIn
 {
     public class CheckInChange : ICheckInChange
     {
