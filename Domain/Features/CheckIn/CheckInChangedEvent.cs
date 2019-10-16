@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using MoreLinq;
 using Utilities;
 
 namespace Domain.Features.CheckIn
