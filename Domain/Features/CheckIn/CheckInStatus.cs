@@ -2,6 +2,9 @@
 {
     public enum CheckInStatus
     {
-        CheckedIn
+        CheckedIn,
+        SamplingStarted,
+        SamplingEnded
+        
     }
 }

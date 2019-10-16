@@ -32,7 +32,8 @@ namespace Domain.Features.CheckIn
             }
 
             var target = ret.First(p => p.PatientId == PatientId);
-            target = new PatientWithStatus(PatientId, CheckInStatus);
+            var updated = new PatientWithStatus(PatientId, CheckInStatus);
+            ret.Replace(target, updated);
 
             return ret.AsReadOnly();
         }
