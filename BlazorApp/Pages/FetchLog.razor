@@ -1,7 +1,9 @@
 ﻿@page "/fetchlog"
 
 @using BlazorApp.Data
+@using InfraStructure.Repositories.CheckIn
 @inject CheckInLogService LogService
+@inject InMemoryCheckInRepository CheckInRepository
 
 <h1>Weather forecast</h1>
 
@@ -13,6 +15,7 @@
 }
 else
 {
+    <button class="btn btn-primary" @onclick="RefreshLog">Click me</button>
     <table class="table">
         <thead>
             <tr>
@@ -36,6 +39,12 @@ else
 
 @code {
     CheckInLogService.LogViewModel[] logViewModels;
+
+    async Task RefreshLog()
+    {
+        CheckInRepository.Refresh();
+        logViewModels = await LogService.GetLog();
+    }
 
     protected override async Task OnInitializedAsync()
     {

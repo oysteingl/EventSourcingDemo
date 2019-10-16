@@ -13,6 +13,11 @@ namespace InfraStructure.Repositories.CheckIn
         {
             _random = new Random();
             
+            RefreshEventStream();
+        }
+
+        private void RefreshEventStream()
+        {
             var patients = Enumerable.Range(1, 10).Select(_ => Guid.NewGuid()).ToList();
             _events = Enumerable.Range(1, 100).Select(i =>
             {
@@ -41,6 +46,11 @@ namespace InfraStructure.Repositories.CheckIn
         public IOrderedEnumerable<ICheckInEvent> GetEvents()
         {
             return _events.OrderBy(@event => @event.Timestamp);
+        }
+
+        public void Refresh()
+        {
+            RefreshEventStream();
         }
     }
 }
