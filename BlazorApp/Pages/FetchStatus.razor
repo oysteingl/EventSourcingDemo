@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 
 @using BlazorApp.Data
+@using Domain.Features.CheckIn
 @using Microsoft.AspNetCore.Components
 @inject CheckInStateService CheckInStateService
 @inject CheckInLogService CheckInLogService
@@ -25,19 +26,39 @@ else
     <table class="table">
         <thead>
         <tr>
-            <th>Patient name</th>
-            <th>Status</th>
-            <th>Last change</th>
+            <th>Checked in</th>
+            <th>Sampling started</th>
+            <th>Sampling ended</th>
         </tr>
         </thead>
         <tbody>
         @foreach (var patientStatusViewModel in patientStatusViewModels)
         {
-            <tr>
-                <td>@patientStatusViewModel.PatientName</td>
-                <td>@patientStatusViewModel.CheckInStatus</td>
-                <td>@patientStatusViewModel.LastChange</td>
-            </tr>
+            @switch (patientStatusViewModel.CheckInStatus)
+            {
+                case "Checked In":
+                    <tr>
+                        <td>@patientStatusViewModel.PatientName</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    break;
+                case "Started sampling":
+                    <tr>
+                        <td></td>
+                        <td>@patientStatusViewModel.PatientName</td>
+                        <td></td>
+                    </tr>
+                    break;
+                case "Finished sampling":
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>@patientStatusViewModel.PatientName</td>
+                    </tr>
+                    break;
+            }
+
         }
         </tbody>
     </table>
